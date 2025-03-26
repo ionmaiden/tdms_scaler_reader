@@ -15,10 +15,13 @@ from loguru import logger
 from nptdms import TdmsFile
 
 
-def read_tdms_scaler(filename, channel=5):
+def read_tdms_scaler(filename, channel=5): # does 'channel=5' still make sense?  
+    # make sure 'chan' has two digits (eg '5' becomes '05') to match the format of the channel names
     chan = f'{channel:02}'
     tdms_file = TdmsFile.read(filename)
+    # extract data from specified channel in th 'SCData' group
     dcct_channel = tdms_file['SCData'][f'CHANNEL_{chan}']
+    # extract timestamp form the 'SCTimestamps' group
     timestamp_channel = tdms_file['SCTimestamps']['TimeStamp']
     b = dcct_channel[:]
     n=1024
